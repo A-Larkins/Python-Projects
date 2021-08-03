@@ -1,3 +1,5 @@
+# Chapter 3
+
 players = [
     {
         'name': 'Stefon Diggs',
