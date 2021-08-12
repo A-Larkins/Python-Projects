@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from pandas.core.indexes import base
 
 df = pd.read_csv('2021projections.csv')
 # get rid of second index column
@@ -37,4 +38,35 @@ df['FantasyPoints'] = (
     df['Pass Yds']*scoring_weights['passing_yds'] + df['Pass TDs']*scoring_weights['passing_td'] + 
     df['Ints']*scoring_weights['int'] ) 
 
-print(df.head())
+
+
+base_columns = ['Player', 'Tm', 'Pos']
+rushing_columns = ['FantasyPoints', 'Rec', 'Rec Yds', 'Rec TDs', 'Rushes', 'Rush Yds', 'Rush TDs']
+
+rb_df = df.loc[(df['Pos'] == 'RB', base_columns + rushing_columns)]
+
+# print(rb_df.sort_values(by='Rush Yds', ascending=False).head(15))
+
+# print(rb_df.describe().transpose())
+
+# print(rb_df['Rushes'][:10])
+
+# print(rb_df['Rushes'].max())
+
+rb_df['RushingTDRank'] = rb_df['Rush TDs'].rank(ascending=False)
+# print(rb_df.sort_values(by='RushingTDRank').head(5))
+
+# print(rb_df['Rushes'].value_counts())
+
+# import seaborn as sns
+# sns.set_style('whitegrid')
+# sns.displot(rb_df['Rushes'])
+
+d_henry = rb_df.loc[rb_df['Player'] == 'Derrick Henry']
+# d_henry.index = d_henry.index.rename('Category')
+# d_henry.columns = ['Value']
+print(d_henry.transpose())
+#rb_df.values numpy array
+
+
+
